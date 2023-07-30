@@ -41,16 +41,6 @@ public class SetmealServiceImpl implements SetmealService {
     private DishMapper dishMapper;
 
     /**
-     * 条件查询
-     * @param setmeal
-     * @return
-     */
-    public List<Setmeal> list(Setmeal setmeal) {
-        List<Setmeal> list = setmealMapper.list(setmeal);
-        return list;
-    }
-
-    /**
      * 新增套餐，同时需要保存套餐和菜品的关联关系
      * @param setmealDTO
      */
@@ -72,15 +62,6 @@ public class SetmealServiceImpl implements SetmealService {
 
         //保存套餐和菜品的关联关系
         setmealDishMapper.insertBatch(setmealDishes);
-    }
-
-    /**
-     * 根据id查询菜品选项
-     * @param id
-     * @return
-     */
-    public List<DishItemVO> getDishItemById(Long id) {
-        return setmealMapper.getDishItemBySetmealId(id);
     }
 
     /**
@@ -186,6 +167,25 @@ public class SetmealServiceImpl implements SetmealService {
                 .status(status)
                 .build();
         setmealMapper.update(setmeal);
+    }
+
+    /**
+     * 条件查询
+     * @param setmeal
+     * @return
+     */
+    public List<Setmeal> list(Setmeal setmeal) {
+        List<Setmeal> list = setmealMapper.list(setmeal);
+        return list;
+    }
+
+    /**
+     * 根据id查询菜品选项
+     * @param id
+     * @return
+     */
+    public List<DishItemVO> getDishItemById(Long id) {
+        return setmealMapper.getDishItemBySetmealId(id);
     }
 
 }

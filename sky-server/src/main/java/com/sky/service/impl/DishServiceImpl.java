@@ -60,7 +60,6 @@ public class DishServiceImpl implements DishService {
     public void saveWithFlavor(DishDTO dishDTO) {
 
         Dish dish = new Dish();
-
         BeanUtils.copyProperties(dishDTO,dish);
 
         //向菜品表插入一条数据
@@ -222,7 +221,6 @@ public class DishServiceImpl implements DishService {
             dishVO.setFlavors(flavors);
             dishVOList.add(dishVO);
         }
-
         return dishVOList;
     }
 }

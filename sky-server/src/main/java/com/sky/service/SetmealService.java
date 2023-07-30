@@ -12,24 +12,10 @@ import java.util.List;
 public interface SetmealService {
 
     /**
-     * 条件查询
-     * @param setmeal
-     * @return
-     */
-    List<Setmeal> list(Setmeal setmeal);
-
-    /**
      * 新增套餐，同时需要保存套餐和菜品的关联关系
      * @param setmealDTO
      */
     void saveWithDish(SetmealDTO setmealDTO);
-
-    /**
-     * 根据id查询菜品选项
-     * @param id
-     * @return
-     */
-    List<DishItemVO> getDishItemById(Long id);
 
     /**
      * 分页查询
@@ -64,4 +50,17 @@ public interface SetmealService {
      */
     void startOrStop(Integer status, Long id);
 
+    /**
+     * 条件查询
+     * @param setmeal
+     * @return
+     */
+    List<Setmeal> list(Setmeal setmeal);
+
+    /**
+     * 根据id查询菜品选项
+     * @param id
+     * @return
+     */
+    List<DishItemVO> getDishItemById(Long id);
 }
