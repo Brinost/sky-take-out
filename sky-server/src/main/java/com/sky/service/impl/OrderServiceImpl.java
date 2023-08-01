@@ -55,6 +55,9 @@ public class OrderServiceImpl implements OrderService {
     private UserMapper userMapper;
     @Autowired
     private WeChatPayUtil weChatPayUtil;
+
+    //标志是否已经支付
+    private boolean flag = false;
     /**
      * 用户下单
      * @param ordersSubmitDTO
@@ -93,6 +96,7 @@ public class OrderServiceImpl implements OrderService {
         orders.setPhone(addressBook.getPhone());
         orders.setConsignee(addressBook.getConsignee());
         orders.setUserId(userId);
+        orders.setAddress(addressBook.getDetail());
 
         orderMapper.insert(orders);
         //向订单明细表插入多条数据
@@ -164,7 +168,7 @@ public class OrderServiceImpl implements OrderService {
      *
      * @param outTradeNo
      */
-    public void paySuccess(String outTradeNo) {
+    public boolean paySuccess(String outTradeNo) {
 
         // 当前登录用户id
         //Long userId = BaseContext.getCurrentId();
@@ -181,12 +185,12 @@ public class OrderServiceImpl implements OrderService {
                 .build();
 
         orderMapper.update(orders);
-        System.out.println(orders.getStatus());
+
+        return true;
     }
 
     /**
      * 用户端订单分页查询
-     *
      * @param pageNum
      * @param pageSize
      * @param status
@@ -223,5 +227,25 @@ public class OrderServiceImpl implements OrderService {
         return new PageResult(page.getTotal(), list);
     }
 
+    /**
+     * 查询订单详情
+     *
+     * @param id
+     * @return
+     */
+    public OrderVO details(Long id) {
+        // 根据id查询订单
+        Orders orders = orderMapper.getById(id);
+
+        // 查询该订单对应的菜品/套餐明细
+        List<OrderDetail> orderDetailList = orderDetailMapper.getByOrderId(orders.getId());
+
+        // 将该订单及其详情封装到OrderVO并返回
+        OrderVO orderVO = new OrderVO();
+        BeanUtils.copyProperties(orders, orderVO);
+        orderVO.setOrderDetailList(orderDetailList);
+
+        return orderVO;
+    }
 
 }
