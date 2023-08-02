@@ -38,7 +38,7 @@ public interface OrderService {
      * 支付成功，修改订单状态
      * @param outTradeNo
      */
-    boolean paySuccess(String outTradeNo);
+    void paySuccess(String outTradeNo);
 
     /**
      * 用户端订单分页查询
