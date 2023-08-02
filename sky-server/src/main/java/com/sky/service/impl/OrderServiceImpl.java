@@ -516,7 +516,6 @@ public class OrderServiceImpl implements OrderService {
     }
     /**
      * 完成订单
-     *
      * @param id
      */
     public void complete(Long id) {
@@ -535,6 +534,30 @@ public class OrderServiceImpl implements OrderService {
         orders.setDeliveryTime(LocalDateTime.now());
 
         orderMapper.update(orders);
+    }
+
+    /**
+     * 客户催单
+     * @param id
+     */
+    @Override
+    public void reminder(Long id) {
+        // 根据id查询订单
+        Orders ordersDB = orderMapper.getById(id);
+
+        // 校验订单是否存在，并且状态为4
+        if (ordersDB == null) {
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+
+        //通过webSocket向客户端推送数据提醒
+        Map map = new HashMap<>();
+        map.put("type",2);  //1是来单提醒 2是客户催单
+        map.put("orderId",ordersDB.getId());
+        map.put("content","订单号"+ordersDB.getNumber());
+
+        webSocketServer.sendToAllClient(JSON.toJSONString(map));
+
     }
 
 }
